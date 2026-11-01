@@ -18,6 +18,9 @@ trait PaymentGatewayTrait
                 "NZD" => "New Zealand Dollar",
                 "CAD" => "Canadian Dollar"
             ],
+            "airtel_money" => [
+                "UGX" => "Ugandan Shilling"
+            ],
             "bkash" => [
                 "BDT" => "Bangladeshi Taka"
             ],

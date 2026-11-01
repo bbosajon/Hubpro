@@ -24,7 +24,7 @@ class PaymentConfigUpdateRequest extends BaseRequest
     {
         $validationRules = [
             'gateway' => 'required',
-            Rule::in(['ssl_commerz', 'sixcash', 'worldpay', 'payfast', 'swish', 'esewa', 'maxicash', 'hubtel', 'viva_wallet', 'tap', 'thawani', 'moncash', 'pvit', 'ccavenue', 'foloosi', 'iyzi_pay', 'xendit', 'fatoorah', 'hyper_pay', 'amazon_pay', 'paypal', 'stripe', 'razor_pay', 'senang_pay', 'paytabs', 'paystack', 'paymob_accept', 'paytm', 'flutterwave', 'liqpay', 'bkash', 'mercadopago', 'cash_after_service', 'digital_payment', 'momo']),
+            Rule::in(['ssl_commerz', 'sixcash', 'worldpay', 'payfast', 'swish', 'esewa', 'maxicash', 'hubtel', 'viva_wallet', 'tap', 'thawani', 'moncash', 'pvit', 'ccavenue', 'foloosi', 'iyzi_pay', 'xendit', 'fatoorah', 'hyper_pay', 'amazon_pay', 'paypal', 'stripe', 'razor_pay', 'senang_pay', 'paytabs', 'paystack', 'paymob_accept', 'paytm', 'flutterwave', 'liqpay', 'bkash', 'airtel_money', 'mercadopago', 'cash_after_service', 'digital_payment', 'momo']),
             'mode' => 'required|in:live,test',
             'gateway_title' => 'required',
         ];
@@ -142,6 +142,12 @@ class PaymentConfigUpdateRequest extends BaseRequest
                 'app_secret' => 'required',
                 'username' => 'required',
                 'password' => 'required',
+            ];
+        } elseif ($this['gateway'] == 'airtel_money') {
+            $additionalDataRules = [
+                'status' => 'required|in:1,0',
+                'client_id' => 'required|string',
+                'client_secret' => 'required|string',
             ];
         } elseif ($this['gateway'] == 'cash_after_service') {
             $additionalDataRules = [

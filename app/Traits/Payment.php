@@ -49,6 +49,7 @@ trait Payment
             'senang_pay' => 'payment/senang-pay/pay',
             'mercadopago' => 'payment/mercadopago/pay',
             'bkash' => 'payment/bkash/make-payment',
+            'airtel_money' => 'payment/airtel-money/pay',
             'paystack' => 'payment/paystack/pay',
             'fatoorah' => 'payment/fatoorah/pay',
             'xendit' => 'payment/xendit/pay',

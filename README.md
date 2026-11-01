@@ -36,6 +36,12 @@ non-`sync` queue driver **and** a running worker:
 needed). If you set `database` locally, run `php artisan queue:work --queue=high,default,low`
 in a terminal or queued mail/push will wait in the `jobs` table.
 
+## Airtel Money Uganda
+
+The app supports Airtel Money Uganda as a UGX digital-payment gateway. Setup,
+merchant credential, sandbox, and live-mode instructions are in
+[`docs/payments/airtel-money-uganda.md`](docs/payments/airtel-money-uganda.md).
+
 Check it: `SELECT count(*), queue FROM jobs GROUP BY queue;` (growing = worker not
 keeping up) and `php artisan queue:failed`. Queued work: notification listeners
 (email + FCM push) on named queues (`high`/`default`/`low`).

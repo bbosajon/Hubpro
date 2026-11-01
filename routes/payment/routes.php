@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Payment_Methods\BkashPaymentController;
+use App\Http\Controllers\Payment_Methods\AirtelMoneyPaymentController;
 use App\Http\Controllers\Payment_Methods\FlutterwaveV3Controller;
 use App\Http\Controllers\Payment_Methods\LiqPayController;
 use App\Http\Controllers\Payment_Methods\MercadoPagoController;
@@ -27,6 +28,12 @@ try {
 
 if (! $isGatewayPublished) {
     Route::group(['prefix' => 'payment'], function () {
+
+        Route::prefix('airtel-money')->as('airtel-money.')->controller(AirtelMoneyPaymentController::class)->group(function () {
+            Route::get('pay', 'index')->name('pay');
+            Route::post('start', 'start')->name('start')->middleware('throttle:10,1');
+            Route::get('status/{payment_id}', 'status')->name('status')->middleware('throttle:30,1');
+        });
 
         // SSLCOMMERZ
         Route::group(['prefix' => 'sslcommerz', 'as' => 'sslcommerz.'], function () {
