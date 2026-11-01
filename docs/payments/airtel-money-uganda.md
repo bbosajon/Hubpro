@@ -12,10 +12,14 @@ It accepts UGX payments only.
 
 ## App setup
 
-1. Apply the database migration with `php artisan migrate`. Fresh installations also receive the inactive gateway from the installer seed.
+1. Back up the production database and review pending changes with `php artisan migrate:status`, then apply migrations with `php artisan migrate --force`. This applies all pending migrations, including Airtel's admin gateway record and the active **Airtel Money Uganda** vendor withdrawal destination.
 2. In the admin panel, open **Third-party → Payment method**, configure **Airtel Money**, enter the credentials, and leave it in **Test** mode until sandbox payments succeed.
-3. Enable UGX as an active store currency. Airtel Money is hidden from checkout if UGX is unavailable.
+3. Enable UGX as an active store currency. Airtel Money is hidden from customer checkout if UGX is unavailable.
 4. Switch the gateway to **Live** only after Airtel grants production access and you have completed an end-to-end test.
+
+## Vendor withdrawals
+
+The vendor withdrawal destination is separate from the customer checkout gateway. Vendors can select **Airtel Money Uganda** and provide their Airtel phone number when requesting a withdrawal. The current integration is collection-only, so admins must process these vendor requests manually; it does not send Airtel payouts automatically.
 
 Credentials are entered in the app's existing payment-gateway settings, not committed to this repository. The gateway must be explicitly enabled in the admin panel.
 

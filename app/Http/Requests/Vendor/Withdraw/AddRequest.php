@@ -3,6 +3,10 @@
 namespace App\Http\Requests\Vendor\Withdraw;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\WithdrawalMethod;
+use App\Services\PaymentMethods\AirtelMoneyClient;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class AddRequest extends BaseRequest
 {
@@ -16,8 +20,43 @@ class AddRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'withdraw_method' => ['required', 'integer', 'exists:withdrawal_methods,id'],
+            'withdraw_method' => [
+                'required',
+                'integer',
+                Rule::exists('withdrawal_methods', 'id')->where(
+                    fn ($query) => $query->where('is_active', 1)->where('vendor_status', 1),
+                ),
+            ],
             'amount' => ['required', 'numeric', 'gt:0'],
+        ];
+    }
+
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                if ($validator->errors()->isNotEmpty()) {
+                    return;
+                }
+
+                $method = WithdrawalMethod::query()
+                    ->whereKey($this->input('withdraw_method'))
+                    ->where('is_active', 1)
+                    ->where('vendor_status', 1)
+                    ->first(['method_name']);
+
+                if ($method?->method_name !== 'Airtel Money Uganda') {
+                    return;
+                }
+
+                $phone = $this->input('method_info.phone');
+                if (! is_string($phone) || AirtelMoneyClient::normalizeUgandaMsisdn($phone) === null) {
+                    $validator->errors()->add(
+                        'method_info.phone',
+                        translate('Enter a valid Uganda Airtel Money phone number.'),
+                    );
+                }
+            },
         ];
     }
 
